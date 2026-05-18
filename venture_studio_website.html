@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venture Studio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #ffffff; }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: #ffffff;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .logo { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+    
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { text-decoration: none; font-size: 14px; color: #555; transition: color 0.2s; }
+    .nav-links a:hover { color: #000; }
+    
+    .cta-button {
+      background: #000;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .cta-button:hover { background: #222; }
+    
+    .hero {
+      padding: 5rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .primary-btn {
+      background: #000;
+      color: #fff;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .primary-btn:hover { background: #222; }
+    
+    .secondary-btn {
+      background: transparent;
+      color: #000;
+      padding: 1rem 2rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .secondary-btn:hover {
+      border-color: #000;
+      background: #f5f5f5;
+    }
+    
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .section h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    
+    .industries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .industry-card {
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 2rem 1.5rem;
+      background: #fafafa;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .industry-card:hover {
+      border-color: rgba(0,0,0,0.2);
+      background: #f5f5f5;
+      transform: translateY(-2px);
+    }
+    
+    .industry-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #000;
+    }
+    
+    .industry-card p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .hiring-section {
+      background: linear-gradient(135deg, #f0f0f0 0%, #fafafa 100%);
+      padding: 4rem 2rem;
+      margin: 3rem 0;
+    }
+    
+    .hiring-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .hiring-content h2 {
+      font-size: 28px;
+      margin-bottom: 1rem;
+    }
+    
+    .hiring-content p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    
+    .about-section {
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .about-section h2 {
+      text-align: left;
+      font-size: 24px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .about-section p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-header h3 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 0.5px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .submit-btn:hover {
+      background: #222;
+    }
+    
+    footer {
+      background: #f5f5f5;
+      padding: 2rem;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      border-top: 0.5px solid rgba(0,0,0,0.08);
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .hero p { font-size: 16px; }
+      .nav-links { gap: 1rem; font-size: 12px; }
+      .industries-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">venture studio</div>
+    <div class="nav-links">
+      <a href="#industries">Industries</a>
+      <a href="#hiring">We're Hiring</a>
+      <a href="#about">About</a>
+      <button class="cta-button" onclick="openApplyModal()">Apply</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Building the next generation of ventures</h1>
+    <p>A venture studio validating ideas fast across multiple industries. We execute lean, move quick, and build teams that thrive in early-stage chaos.</p>
+    <div class="hero-buttons">
+      <button class="primary-btn" onclick="openApplyModal()">Join Our Team</button>
+      <button class="secondary-btn" onclick="document.getElementById('industries').scrollIntoView({behavior: 'smooth'})">See Our Focus</button>
+    </div>
+  </section>
+
+  <section id="industries" class="section">
+    <h2>Industries We're Exploring</h2>
+    <div class="industries-grid">
+      <div class="industry-card">
+        <h3>Manufacturing & Supply Chain</h3>
+        <p>Optimizing global sourcing, supply chain logistics, and manufacturing operations.</p>
+      </div>
+      <div class="industry-card">
+        <h3>Healthcare & Wellness</h3>
+        <p>Bridging gaps in healthcare access and wellness services globally.</p>
+      </div>
+      <div class="industry-card">
+        <h3>Hospitality & Food Service</h3>
+        <p>Innovation and automation in hospitality, food, and customer experience.</p>
+      </div>
+      <div class="industry-card">
+        <h3>B2B Trade & Exports</h3>
+        <p>Connecting manufacturers and service providers to global markets.</p>
+      </div>
+      <div class="industry-card">
+        <h3>Consumer Products</h3>
+        <p>Building and scaling innovative consumer brands and products.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="hiring" class="hiring-section">
+    <div class="hiring-content">
+      <h2>We're Hiring</h2>
+      <p style="font-size: 16px; color: #555;">We're looking for a <strong>GTM Operations Lead</strong>—someone who thrives on research, networking, and building things from scratch. You'll work directly with the founder, managing market research, supplier outreach, and go-to-market strategy across multiple ventures.</p>
+      <p style="font-size: 14px; color: #666; margin: 1.5rem 0;">This is a contract role ($450/month, fully remote). Perfect for someone building a portfolio and learning startup operations at speed.</p>
+      <button class="primary-btn" onclick="openApplyModal()">Apply Now</button>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <h2>About Us</h2>
+    <p>We're a lean founding team executing on multiple market opportunities simultaneously. Rather than betting everything on one idea, we validate concepts in parallel—testing hypotheses, talking to customers and suppliers, and building the business playbooks that lead to real ventures.</p>
+    <p>We're looking for operators who love the chaos of early-stage ventures: people who are comfortable with ambiguity, energized by learning, and excited about building something from nothing.</p>
+    <p>If you want to see how real ventures get built—from market research to first customers—and you want to do it with a team that moves fast and thinks big, we should talk.</p>
+  </section>
+
+  <div id="applyModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Apply Now</h3>
+        <button class="close-btn" onclick="closeApplyModal()">×</button>
+      </div>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label>LinkedIn Profile</label>
+          <input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+        </div>
+        <div class="form-group">
+          <label>Why are you interested in this role?</label>
+          <textarea name="message" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Venture Studio. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function openApplyModal() {
+      document.getElementById('applyModal').classList.add('active');
+    }
+    
+    function closeApplyModal() {
+      document.getElementById('applyModal').classList.remove('active');
+    }
+    
+    function handleSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        linkedin: formData.get('linkedin'),
+        message: formData.get('message')
+      };
+      
+      console.log('Application submitted:', data);
+      
+      alert(`Thanks ${data.name}! We've received your application. We'll be in touch within 24-48 hours.\n\nIn the meantime, check out our pitch at the link in your confirmation email.`);
+      
+      closeApplyModal();
+      event.target.reset();
+    }
+    
+    window.onclick = function(event) {
+      const modal = document.getElementById('applyModal');
+      if (event.target === modal) {
+        closeApplyModal();
+      }
+    }
+  </script>
+</body>
+</html>
